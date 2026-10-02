@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#198754"
+    >
+
+    <title>Lista de Compras</title>
+
+    <style>
+
+        /* =====================================================
+           CONFIGURAÇÕES GERAIS
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #198754 0px,
+                    #198754 180px,
+                    #f3f5f7 180px,
+                    #f3f5f7 100%
+                );
+
+            color: #212529;
+
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           APLICATIVO
+        ===================================================== */
+
+        .app {
+
+            width: 100%;
+
+            max-width: 900px;
+
+            margin: 0 auto;
+
+            padding:
+                20px
+                20px
+                40px;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO
+        ===================================================== */
+
+        .cabecalho {
+
+            color: white;
+
+            text-align: center;
+
+            padding:
+                10px
+                0
+                25px;
+        }
+
+
+        .cabecalho h1 {
+
+            margin:
+                0
+                0
+                8px;
+
+            font-size: 32px;
+        }
+
+
+        .cabecalho p {
+
+            margin: 0;
+
+            opacity: 0.9;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 20px;
+
+            margin-bottom: 18px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =====================================================
+           FORMULÁRIO
+        ===================================================== */
+
+        .formulario h2 {
+
+            margin-top: 0;
+
+            font-size: 20px;
+        }
+
+
+        .campo {
+
+            margin-bottom: 12px;
+        }
+
+
+        .campo label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 6px;
+
+            font-size: 14px;
+        }
+
+
+        .campo input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border:
+                1px solid #ced4da;
+
+            border-radius: 10px;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .campo input:focus {
+
+            border-color: #198754;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(25, 135, 84, 0.12);
+        }
+
+
+        /* =====================================================
+           BOTÕES
+        ===================================================== */
+
+        button {
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding:
+                12px
+                16px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.1s,
+                opacity 0.2s;
+        }
+
+
+        button:active {
+
+            transform: scale(0.97);
+        }
+
+
+        button:hover {
+
+            opacity: 0.9;
+        }
+
+
+        #adicionar {
+
+            width: 100%;
+
+            background-color: #198754;
+
+            color: white;
+
+            margin-top: 5px;
+        }
+
+
+        .botoes-principais {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+
+        .salvar-lista {
+
+            background-color: #198754;
+
+            color: white;
+        }
+
+
+        .nova-lista {
+
+            background-color: #0d6efd;
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           CABEÇALHO DA LISTA
+        ===================================================== */
+
+        .titulo-lista {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .titulo-lista h2 {
+
+            margin: 0;
+
+            font-size: 20px;
+        }
+
+
+        .contador {
+
+            background-color: #e9f7ef;
+
+            color: #198754;
+
+            padding:
+                6px
+                10px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           LISTA DE PRODUTOS
+        ===================================================== */
+
+        #listaProdutos {
+
+            margin-top: 15px;
+        }
+
+
+        .produto-card {
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            padding: 15px;
+
+            margin-bottom: 12px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.04);
+        }
+
+
+        .produto-topo {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+
+        .produto-nome {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            word-break: break-word;
+        }
+
+
+        .produto-preco {
+
+            color: #6c757d;
+
+            font-size: 14px;
+
+            margin-top: 5px;
+        }
+
+
+        .produto-subtotal {
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: #198754;
+
+            white-space: nowrap;
+        }
+
+
+        .produto-acoes {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-top: 15px;
+
+            gap: 10px;
+        }
+
+
+        .quantidade {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .quantidade-numero {
+
+            min-width: 30px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            font-size: 17px;
+        }
+
+
+        .mais,
+        .menos {
+
+            width: 38px;
+
+            height: 38px;
+
+            padding: 0;
+
+            border-radius: 50%;
+
+            font-size: 20px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+
+        .mais {
+
+            background-color: #198754;
+
+            color: white;
+        }
+
+
+        .menos {
+
+            background-color: #ffc107;
+
+            color: #212529;
+        }
+
+
+        .excluir {
+
+            background-color: #dc3545;
+
+            color: white;
+
+            padding:
+                9px
+                12px;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           LISTA VAZIA
+        ===================================================== */
+
+        .lista-vazia {
+
+            text-align: center;
+
+            padding:
+                30px
+                10px;
+
+            color: #6c757d;
+        }
+
+
+        .lista-vazia .icone {
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* =====================================================
+           RESUMO
+        ===================================================== */
+
+        .resumo {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #198754,
+                    #146c43
+                );
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 20px;
+
+            margin-bottom: 18px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.10);
+        }
+
+
+        .resumo-titulo {
+
+            font-size: 14px;
+
+            opacity: 0.9;
+
+            margin-bottom: 5px;
+        }
+
+
+        .valor-total {
+
+            font-size: 32px;
+
+            font-weight: bold;
+
+            margin-bottom: 18px;
+        }
+
+
+        .resumo-info {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 10px;
+        }
+
+
+        .resumo-item {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.15
+                );
+
+            border-radius: 10px;
+
+            padding: 12px;
+        }
+
+
+        .resumo-item small {
+
+            display: block;
+
+            opacity: 0.85;
+
+            margin-bottom: 4px;
+        }
+
+
+        .resumo-item strong {
+
+            font-size: 18px;
+        }
+
+
+        /* =====================================================
+           HISTÓRICO
+        ===================================================== */
+
+        .historico h2 {
+
+            margin-top: 0;
+
+            font-size: 20px;
+        }
+
+
+        .lista-salva {
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            padding: 15px;
+
+            margin-top: 12px;
+
+            background: #fafafa;
+        }
+
+
+        .lista-salva-topo {
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+        }
+
+
+        .lista-salva-nome {
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            word-break: break-word;
+        }
+
+
+        .lista-salva-total {
+
+            color: #198754;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+
+        .lista-salva-info {
+
+            color: #6c757d;
+
+            font-size: 13px;
+
+            margin-top: 7px;
+        }
+
+
+        .lista-salva-botoes {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+
+        .abrir {
+
+            background-color: #0d6efd;
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
+
+        .rodape {
+
+            text-align: center;
+
+            color: #6c757d;
+
+            font-size: 12px;
+
+            padding: 10px;
+        }
+
+
+        /* =====================================================
+           DESKTOP
+        ===================================================== */
+
+        @media (min-width: 700px) {
+
+            .formulario-grid {
+
+                display: grid;
+
+                grid-template-columns:
+                    2fr
+                    1fr
+                    1fr;
+
+                gap: 10px;
+            }
+
+
+            .campo {
+
+                margin-bottom: 0;
+            }
+
+
+            #adicionar {
+
+                margin-top: 15px;
+            }
+
+        }
+
+
+        /* =====================================================
+           CELULAR
+        ===================================================== */
+
+        @media (max-width: 699px) {
+
+            body {
+
+                background:
+                    linear-gradient(
+                        180deg,
+                        #198754 0px,
+                        #198754 150px,
+                        #f3f5f7 150px,
+                        #f3f5f7 100%
+                    );
+            }
+
+
+            .app {
+
+                padding:
+                    10px
+                    10px
+                    30px;
+            }
+
+
+            .cabecalho {
+
+                padding:
+                    5px
+                    0
+                    18px;
+            }
+
+
+            .cabecalho h1 {
+
+                font-size: 25px;
+            }
+
+
+            .cabecalho p {
+
+                font-size: 13px;
+            }
+
+
+            .card {
+
+                padding: 15px;
+
+                border-radius: 15px;
+            }
+
+
+            .botoes-principais {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .valor-total {
+
+                font-size: 28px;
+            }
+
+
+            .produto-topo {
+
+                flex-direction: column;
+            }
+
+
+            .produto-subtotal {
+
+                font-size: 20px;
+            }
+
+
+            .lista-salva-topo {
+
+                flex-direction: column;
+            }
+
+
+            .lista-salva-total {
+
+                font-size: 18px;
+            }
+
+        }
+
+
+        /* =====================================================
+           CELULARES MUITO PEQUENOS
+        ===================================================== */
+
+        @media (max-width: 380px) {
+
+            .cabecalho h1 {
+
+                font-size: 22px;
+            }
+
+
+            .resumo-info {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .lista-salva-botoes {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         CABEÇALHO
+    ====================================================== -->
+
+    <header class="cabecalho">
+
+        <h1>
+            🛒 Lista de Compras
+        </h1>
+
+        <p>
+            Organize suas compras de forma simples
+        </p>
+
+    </header>
+
+
+    <!-- =====================================================
+         FORMULÁRIO
+    ====================================================== -->
+
+    <section class="card formulario">
+
+        <h2>
+            ➕ Adicionar produto
+        </h2>
+
+
+        <div class="formulario-grid">
+
+
+            <div class="campo">
+
+                <label for="produto">
+                    Produto
+                </label>
+
+                <input
+                    type="text"
+                    id="produto"
+                    placeholder="Ex.: Arroz"
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="preco">
+                    Preço
+                </label>
+
+                <input
+                    type="number"
+                    id="preco"
+                    placeholder="R$ 0,00"
+                    min="0.01"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <div class="campo">
+
+                <label for="quantidade">
+                    Quantidade
+                </label>
+
+                <input
+                    type="number"
+                    id="quantidade"
+                    placeholder="Quantidade"
+                    min="1"
+                    value="1"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <button id="adicionar">
+
+            ➕ Adicionar produto
+
+        </button>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         PRODUTOS
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="titulo-lista">
+
+            <h2>
+                🛍️ Produtos
+            </h2>
+
+            <span
+                class="contador"
+                id="contadorProdutos"
+            >
+                0 produtos
+            </span>
+
+        </div>
+
+
+        <div id="listaProdutos">
+
+            <!-- Produtos serão inseridos aqui -->
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         RESUMO
+    ====================================================== -->
+
+    <section class="resumo">
+
+        <div class="resumo-titulo">
+            VALOR TOTAL DA COMPRA
+        </div>
+
+
+        <div
+            class="valor-total"
+            id="valorTotal"
+        >
+            R$ 0,00
+        </div>
+
+
+        <div class="resumo-info">
+
+
+            <div class="resumo-item">
+
+                <small>
+                    Quantidade
+                </small>
+
+                <strong id="totalItens">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="resumo-item">
+
+                <small>
+                    Produtos
+                </small>
+
+                <strong id="totalProdutos">
+                    0
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BOTÕES
+    ====================================================== -->
+
+    <section class="card">
+
+        <div class="botoes-principais">
+
+
+            <button
+                class="salvar-lista"
+                onclick="salvarLista()"
+            >
+
+                💾 Salvar Lista
+
+            </button>
+
+
+            <button
+                class="nova-lista"
+                onclick="novaLista()"
+            >
+
+                🆕 Nova Lista
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         HISTÓRICO
+    ====================================================== -->
+
+    <section class="card historico">
+
+        <h2>
+            📋 Minhas listas
+        </h2>
+
+
+        <div id="historicoListas">
+
+            <!-- Listas salvas aparecerão aqui -->
+
+        </div>
+
+    </section>
+
+
+    <footer class="rodape">
+
+        Lista de Compras • Seus dados ficam salvos neste dispositivo
+
+    </footer>
+
+
+</div>
+
+
+<script>
+
+
+    // =====================================================
+    // ELEMENTOS
+    // =====================================================
+
+
+    const produto =
+        document.getElementById("produto");
+
+
+    const preco =
+        document.getElementById("preco");
+
+
+    const quantidade =
+        document.getElementById("quantidade");
+
+
+    const btnAdicionar =
+        document.getElementById("adicionar");
+
+
+    const listaProdutos =
+        document.getElementById("listaProdutos");
+
+
+    const totalItens =
+        document.getElementById("totalItens");
+
+
+    const totalProdutos =
+        document.getElementById("totalProdutos");
+
+
+    const valorTotal =
+        document.getElementById("valorTotal");
+
+
+    const contadorProdutos =
+        document.getElementById(
+            "contadorProdutos"
+        );
+
+
+    const historicoListas =
+        document.getElementById(
+            "historicoListas"
+        );
+
+
+    // =====================================================
+    // CARREGAR DADOS
+    // =====================================================
+
+
+    let produtos =
+        JSON.parse(
+            localStorage.getItem("produtos")
+        ) || [];
+
+
+    let listasSalvas =
+        JSON.parse(
+            localStorage.getItem("listasSalvas")
+        ) || [];
+
+
+    // =====================================================
+    // INICIAR
+    // =====================================================
+
+
+    atualizarLista();
+
+    atualizarHistorico();
+
+
+    // =====================================================
+    // ADICIONAR PRODUTO
+    // =====================================================
+
+
+    btnAdicionar.addEventListener(
+        "click",
+        adicionarProduto
+    );
+
+
+    function adicionarProduto() {
+
+
+        const nome =
+            produto.value.trim();
+
+
+        const valor =
+            Number(preco.value);
+
+
+        const qtd =
+            Number(quantidade.value);
+
+
+        if (nome === "") {
+
+            alert(
+                "Digite o nome do produto!"
+            );
+
+            produto.focus();
+
+            return;
+        }
+
+
+        if (
+            valor <= 0 ||
+            isNaN(valor)
+        ) {
+
+            alert(
+                "Digite um preço válido!"
+            );
+
+            preco.focus();
+
+            return;
+        }
+
+
+        if (
+            qtd <= 0 ||
+            isNaN(qtd)
+        ) {
+
+            alert(
+                "Digite uma quantidade válida!"
+            );
+
+            quantidade.focus();
+
+            return;
+        }
+
+
+        const novoProduto = {
+
+            nome: nome,
+
+            valor: valor,
+
+            quantidade: qtd
+
+        };
+
+
+        produtos.push(
+            novoProduto
+        );
+
+
+        salvarProdutos();
+
+        atualizarLista();
+
+
+        produto.value = "";
+
+        preco.value = "";
+
+        quantidade.value = 1;
+
+
+        produto.focus();
+
+    }
+
+
+    // =====================================================
+    // ENTER PARA ADICIONAR
+    // =====================================================
+
+
+    produto.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                adicionarProduto();
+
+            }
+
+        }
+    );
+
+
+    preco.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                adicionarProduto();
+
+            }
+
+        }
+    );
+
+
+    quantidade.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                adicionarProduto();
+
+            }
+
+        }
+    );
+
+
+    // =====================================================
+    // ATUALIZAR LISTA
+    // =====================================================
+
+
+    function atualizarLista() {
+
+
+        listaProdutos.innerHTML = "";
+
+
+        let total = 0;
+
+        let quantidadeTotal = 0;
+
+
+        if (
+            produtos.length === 0
+        ) {
+
+            listaProdutos.innerHTML = `
+
+                <div class="lista-vazia">
+
+                    <div class="icone">
+                        🛒
+                    </div>
+
+                    <strong>
+                        Sua lista está vazia
+                    </strong>
+
+                    <p>
+                        Adicione seu primeiro produto acima.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        produtos.forEach(
+            function (item, index) {
+
+
+                const subtotal =
+                    item.valor *
+                    item.quantidade;
+
+
+                total += subtotal;
+
+
+                quantidadeTotal +=
+                    item.quantidade;
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "produto-card";
+
+
+                card.innerHTML = `
+
+                    <div class="produto-topo">
+
+                        <div>
+
+                            <div class="produto-nome">
+
+                                ${item.nome}
+
+                            </div>
+
+                            <div class="produto-preco">
+
+                                R$ ${formatarMoeda(item.valor)}
+                                por unidade
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="produto-subtotal">
+
+                            R$ ${formatarMoeda(subtotal)}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="produto-acoes">
+
+
+                        <div class="quantidade">
+
+                            <button
+                                class="menos"
+                                onclick="diminuirQuantidade(${index})"
+                                aria-label="Diminuir quantidade"
+                            >
+                                −
+                            </button>
+
+
+                            <span
+                                class="quantidade-numero"
+                            >
+
+                                ${item.quantidade}
+
+                            </span>
+
+
+                            <button
+                                class="mais"
+                                onclick="aumentarQuantidade(${index})"
+                                aria-label="Aumentar quantidade"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+
+                        <button
+                            class="excluir"
+                            onclick="excluirProduto(${index})"
+                        >
+
+                            🗑️ Excluir
+
+                        </button>
+
+
+                    </div>
+
+                `;
+
+
+                listaProdutos.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        totalItens.textContent =
+            quantidadeTotal;
+
+
+        totalProdutos.textContent =
+            produtos.length;
+
+
+        valorTotal.textContent =
+            "R$ " +
+            formatarMoeda(total);
+
+
+        atualizarContador();
+
+    }
+
+
+    // =====================================================
+    // CONTADOR
+    // =====================================================
+
+
+    function atualizarContador() {
+
+
+        const quantidade =
+            produtos.length;
+
+
+        if (quantidade === 0) {
+
+            contadorProdutos.textContent =
+                "0 produtos";
+
+        }
+
+        else if (
+            quantidade === 1
+        ) {
+
+            contadorProdutos.textContent =
+                "1 produto";
+
+        }
+
+        else {
+
+            contadorProdutos.textContent =
+                quantidade +
+                " produtos";
+
+        }
+
+    }
+
+
+    // =====================================================
+    // FORMATAR MOEDA
+    // =====================================================
+
+
+    function formatarMoeda(valor) {
+
+        return valor.toLocaleString(
+            "pt-BR",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // AUMENTAR QUANTIDADE
+    // =====================================================
+
+
+    function aumentarQuantidade(index) {
+
+
+        produtos[index].quantidade++;
+
+
+        salvarProdutos();
+
+        atualizarLista();
+
+    }
+
+
+    // =====================================================
+    // DIMINUIR QUANTIDADE
+    // =====================================================
+
+
+    function diminuirQuantidade(index) {
+
+
+        if (
+            produtos[index].quantidade > 1
+        ) {
+
+            produtos[index].quantidade--;
+
+
+            salvarProdutos();
+
+            atualizarLista();
+
+        }
+
+        else {
+
+            alert(
+                "A quantidade mínima é 1."
+            );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // EXCLUIR PRODUTO
+    // =====================================================
+
+
+    function excluirProduto(index) {
+
+
+        const confirmar =
+            confirm(
+                "Deseja realmente excluir este produto?"
+            );
+
+
+        if (!confirmar) {
+
+            return;
+
+        }
+
+
+        produtos.splice(
+            index,
+            1
+        );
+
+
+        salvarProdutos();
+
+        atualizarLista();
+
+    }
+
+
+    // =====================================================
+    // SALVAR PRODUTOS
+    // =====================================================
+
+
+    function salvarProdutos() {
+
+        localStorage.setItem(
+            "produtos",
+            JSON.stringify(produtos)
+        );
+
+    }
+
+
+    // =====================================================
+    // SALVAR LISTA COMPLETA
+    // =====================================================
+
+
+    function salvarLista() {
+
+
+        if (
+            produtos.length === 0
+        ) {
+
+            alert(
+                "Não é possível salvar uma lista vazia!"
+            );
+
+            return;
+
+        }
+
+
+        const nomeLista =
+            prompt(
+                "Digite um nome para a lista:"
+            );
+
+
+        if (
+            nomeLista === null ||
+            nomeLista.trim() === ""
+        ) {
+
+            alert(
+                "Digite um nome para a lista!"
+            );
+
+            return;
+
+        }
+
+
+        const total =
+            produtos.reduce(
+                function (
+                    soma,
+                    item
+                ) {
+
+                    return soma +
+                        (
+                            item.valor *
+                            item.quantidade
+                        );
+
+                },
+                0
+            );
+
+
+        const lista = {
+
+            nome:
+                nomeLista.trim(),
+
+            data:
+                new Date()
+                    .toLocaleString(
+                        "pt-BR"
+                    ),
+
+            produtos:
+                JSON.parse(
+                    JSON.stringify(
+                        produtos
+                    )
+                ),
+
+            total:
+                total
+
+        };
+
+
+        listasSalvas.push(
+            lista
+        );
+
+
+        localStorage.setItem(
+            "listasSalvas",
+            JSON.stringify(
+                listasSalvas
+            )
+        );
+
+
+        atualizarHistorico();
+
+
+        alert(
+            'Lista "' +
+            nomeLista.trim() +
+            '" salva com sucesso!'
+        );
+
+    }
+
+
+    // =====================================================
+    // NOVA LISTA
+    // =====================================================
+
+
+    function novaLista() {
+
+
+        if (
+            produtos.length > 0
+        ) {
+
+
+            const confirmar =
+                confirm(
+
+                    "A lista atual ainda possui produtos.\n\n" +
+
+                    "Deseja salvar esta lista antes de começar uma nova?"
+
+                );
+
+
+            if (confirmar) {
+
+                salvarLista();
+
+            }
+
+        }
+
+
+        produtos = [];
+
+
+        salvarProdutos();
+
+        atualizarLista();
+
+
+        produto.value = "";
+
+        preco.value = "";
+
+        quantidade.value = 1;
+
+
+        produto.focus();
+
+    }
+
+
+    // =====================================================
+    // MOSTRAR HISTÓRICO
+    // =====================================================
+
+
+    function atualizarHistorico() {
+
+
+        historicoListas.innerHTML =
+            "";
+
+
+        if (
+            listasSalvas.length === 0
+        ) {
+
+            historicoListas.innerHTML = `
+
+                <div class="lista-vazia">
+
+                    <div class="icone">
+                        📋
+                    </div>
+
+                    <strong>
+                        Nenhuma lista salva
+                    </strong>
+
+                    <p>
+                        Salve uma lista para ela aparecer aqui.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        listasSalvas.forEach(
+            function (
+                lista,
+                index
+            ) {
+
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "lista-salva";
+
+
+                div.innerHTML = `
+
+                    <div class="lista-salva-topo">
+
+
+                        <div>
+
+                            <div class="lista-salva-nome">
+
+                                📋
+                                ${lista.nome || "Lista sem nome"}
+
+                            </div>
+
+
+                            <div class="lista-salva-info">
+
+                                📅 ${lista.data}
+
+                                <br>
+
+                                🛒 ${lista.produtos.length}
+                                produto(s)
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="lista-salva-total">
+
+                            R$ ${formatarMoeda(lista.total)}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="lista-salva-botoes">
+
+
+                        <button
+                            class="abrir"
+                            onclick="abrirLista(${index})"
+                        >
+
+                            📂 Abrir Lista
+
+                        </button>
+
+
+                        <button
+                            class="excluir"
+                            onclick="excluirListaSalva(${index})"
+                        >
+
+                            🗑️ Excluir
+
+                        </button>
+
+
+                    </div>
+
+                `;
+
+
+                historicoListas.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // ABRIR LISTA SALVA
+    // =====================================================
+
+
+    function abrirLista(index) {
+
+
+        const confirmar =
+            confirm(
+
+                "Deseja carregar esta lista?\n\n" +
+
+                "Os produtos da lista atual serão substituídos."
+
+            );
+
+
+        if (!confirmar) {
+
+            return;
+
+        }
+
+
+        produtos =
+            JSON.parse(
+                JSON.stringify(
+                    listasSalvas[
+                        index
+                    ].produtos
+                )
+            );
+
+
+        salvarProdutos();
+
+        atualizarLista();
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+
+        alert(
+            "Lista carregada com sucesso!"
+        );
+
+    }
+
+
+    // =====================================================
+    // EXCLUIR LISTA SALVA
+    // =====================================================
+
+
+    function excluirListaSalva(index) {
+
+
+        const confirmar =
+            confirm(
+
+                "Deseja excluir esta lista salva?"
+
+            );
+
+
+        if (!confirmar) {
+
+            return;
+
+        }
+
+
+        listasSalvas.splice(
+            index,
+            1
+        );
+
+
+        localStorage.setItem(
+
+            "listasSalvas",
+
+            JSON.stringify(
+                listasSalvas
+            )
+
+        );
+
+
+        atualizarHistorico();
+
+    }
+
+
+</script>
+
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./service-worker.js")
+            .catch(function (erro) {
+                console.error("Erro ao registrar o aplicativo:", erro);
+            });
+    });
+}
+</script>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+LISTA DE COMPRAS - APLICATIVO
+
+Este pacote transforma o seu HTML em um PWA instalável.
+
+ARQUIVOS
+- index.html
+- manifest.json
+- service-worker.js
+- icone-192.png
+- icone-512.png
+
+COMO INSTALAR NO CELULAR
+1. Publique estes arquivos em uma hospedagem HTTPS.
+2. Abra o endereço do index.html pelo Chrome no celular.
+3. Escolha "Instalar aplicativo" ou "Adicionar à tela inicial".
+4. O app será aberto em modo de aplicativo.
+
+IMPORTANTE
+Os produtos e listas usam localStorage e ficam salvos no dispositivo/navegador onde foram cadastrados.
