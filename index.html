@@ -15,6 +15,19 @@
         content="#198754"
     >
 
+    <meta
+        name="description"
+        content="Lista de compras que funciona offline no celular e computador"
+    >
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Compras">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icone-192.png">
+
     <title>Lista de Compras</title>
 
     <style>
@@ -1100,6 +1113,8 @@
     <footer class="rodape">
 
         Lista de Compras • Seus dados ficam salvos neste dispositivo
+        <br>
+        <span id="statusOffline">Verificando modo offline...</span>
 
     </footer>
 
@@ -2069,17 +2084,40 @@
 
 </script>
 
-
 <script>
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-        navigator.serviceWorker.register("./service-worker.js")
-            .catch(function (erro) {
-                console.error("Erro ao registrar o aplicativo:", erro);
-            });
-    });
-}
+// =====================================================
+// MODO OFFLINE / PWA
+// =====================================================
+(function () {
+    const status = document.getElementById("statusOffline");
+
+    function atualizarStatus() {
+        if (status) {
+            status.textContent = navigator.onLine
+                ? "🟢 Online • funcionamento offline disponível após o carregamento"
+                : "🔵 Offline • o aplicativo continua funcionando";
+        }
+    }
+
+    window.addEventListener("online", atualizarStatus);
+    window.addEventListener("offline", atualizarStatus);
+    atualizarStatus();
+
+    // Service Worker só funciona em HTTPS ou localhost.
+    if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("./service-worker.js", { scope: "./" })
+                .then(function (registration) {
+                    console.log("Aplicativo offline ativado:", registration.scope);
+                })
+                .catch(function (error) {
+                    console.error("Não foi possível ativar o modo offline:", error);
+                });
+        });
+    }
+})();
 </script>
+
 </body>
 
 </html>

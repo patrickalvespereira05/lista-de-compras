@@ -1,19 +1,9 @@
-LISTA DE COMPRAS - APLICATIVO
+LISTA DE COMPRAS — MODO OFFLINE
 
-Este pacote transforma o seu HTML em um PWA instalável.
+1. Publique estes arquivos no GitHub Pages (ou outro servidor HTTPS).
+2. Abra o aplicativo uma vez com internet no celular.
+3. Instale pela opção “Instalar aplicativo” / “Adicionar à tela inicial”.
+4. Depois do primeiro carregamento completo, a interface fica disponível offline.
+5. Os produtos e listas continuam salvos no próprio dispositivo usando armazenamento local.
 
-ARQUIVOS
-- index.html
-- manifest.json
-- service-worker.js
-- icone-192.png
-- icone-512.png
-
-COMO INSTALAR NO CELULAR
-1. Publique estes arquivos em uma hospedagem HTTPS.
-2. Abra o endereço do index.html pelo Chrome no celular.
-3. Escolha "Instalar aplicativo" ou "Adicionar à tela inicial".
-4. O app será aberto em modo de aplicativo.
-
-IMPORTANTE
-Os produtos e listas usam localStorage e ficam salvos no dispositivo/navegador onde foram cadastrados.
+IMPORTANTE: abrir o index.html diretamente como arquivo (file://) não ativa Service Worker. Para o modo offline do PWA, use HTTPS ou localhost.
